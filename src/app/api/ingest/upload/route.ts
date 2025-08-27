@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { normalizeWorkbook } from '@/lib/normalize';
 import { DataStorage } from '@/lib/storage';
-import { validateRequiredColumns } from '@/lib/columns';
 
 /**
  * POST /api/ingest/upload
