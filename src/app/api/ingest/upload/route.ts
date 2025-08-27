@@ -9,6 +9,20 @@ import { validateRequiredColumns } from '@/lib/columns';
  */
 export async function POST(request: NextRequest) {
   try {
+    // Check for authentication if secret is configured
+    const ingestSecret = process.env.INGEST_SECRET;
+    if (ingestSecret) {
+      const authHeader = request.headers.get('authorization');
+      const providedSecret = authHeader?.replace('Bearer ', '');
+      
+      if (!providedSecret || providedSecret !== ingestSecret) {
+        return NextResponse.json(
+          { error: 'Unauthorized. Invalid or missing authentication token.' },
+          { status: 401 }
+        );
+      }
+    }
+
     const formData = await request.formData();
     const file = formData.get('file') as File;
 

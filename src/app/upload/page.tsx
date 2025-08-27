@@ -29,9 +29,19 @@ export default function UploadPage() {
     formData.append('file', file);
 
     try {
+      const headers: any = {};
+      
+      // Add authentication header if secret is available
+      // In a real app, you'd get this from user login or env var
+      const ingestSecret = process.env.NEXT_PUBLIC_INGEST_SECRET || 'supersecretstring';
+      if (ingestSecret) {
+        headers['Authorization'] = `Bearer ${ingestSecret}`;
+      }
+
       const response = await fetch('/api/ingest/upload', {
         method: 'POST',
         body: formData,
+        headers,
       });
 
       const data = await response.json();

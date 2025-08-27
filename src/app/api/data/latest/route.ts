@@ -72,8 +72,22 @@ export async function GET(request: NextRequest) {
  * DELETE /api/data/latest
  * Clear the stored data
  */
-export async function DELETE() {
+export async function DELETE(request: NextRequest) {
   try {
+    // Check for authentication if secret is configured
+    const ingestSecret = process.env.INGEST_SECRET;
+    if (ingestSecret) {
+      const authHeader = request.headers.get('authorization');
+      const providedSecret = authHeader?.replace('Bearer ', '');
+      
+      if (!providedSecret || providedSecret !== ingestSecret) {
+        return NextResponse.json(
+          { error: 'Unauthorized. Invalid or missing authentication token.' },
+          { status: 401 }
+        );
+      }
+    }
+
     await DataStorage.clear();
     
     return NextResponse.json({

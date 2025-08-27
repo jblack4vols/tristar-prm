@@ -70,7 +70,18 @@ export default function DataViewer() {
     if (!confirm('Are you sure you want to clear all data?')) return;
     
     try {
-      const response = await fetch('/api/data/latest', { method: 'DELETE' });
+      const headers: any = {};
+      
+      // Add authentication header if secret is available
+      const ingestSecret = process.env.NEXT_PUBLIC_INGEST_SECRET || 'supersecretstring';
+      if (ingestSecret) {
+        headers['Authorization'] = `Bearer ${ingestSecret}`;
+      }
+
+      const response = await fetch('/api/data/latest', { 
+        method: 'DELETE',
+        headers 
+      });
       if (response.ok) {
         setData(null);
         setError('Data cleared successfully');
