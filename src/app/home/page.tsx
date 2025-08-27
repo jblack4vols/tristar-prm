@@ -85,8 +85,11 @@ export default function HomePage() {
               </div>
               <div className="bg-gray-50 px-6 py-3">
                 <div className="text-sm">
-                  <Link href="/data" className="font-medium text-green-600 hover:text-green-500">
-                    View dashboard <span aria-hidden="true">&rarr;</span>
+                  <Link href="/data" className="font-medium text-green-600 hover:text-green-500 mr-4">
+                    View data <span aria-hidden="true">&rarr;</span>
+                  </Link>
+                  <Link href="/dashboard" className="font-medium text-blue-600 hover:text-blue-500">
+                    Dashboard <span aria-hidden="true">&rarr;</span>
                   </Link>
                 </div>
               </div>
